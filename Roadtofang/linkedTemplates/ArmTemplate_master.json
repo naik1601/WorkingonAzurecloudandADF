@@ -31,6 +31,14 @@
 			"type": "string",
 			"defaultValue": "azurelib"
 		},
+		"RestService1_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://restcountries.com/v3.1/name"
+		},
+		"RestServicetogetcountriesdata_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -75,6 +83,12 @@
 					},
 					"AzureSqlDb1_properties_typeProperties_userName": {
 						"value": "[parameters('AzureSqlDb1_properties_typeProperties_userName')]"
+					},
+					"RestService1_properties_typeProperties_url": {
+						"value": "[parameters('RestService1_properties_typeProperties_url')]"
+					},
+					"RestServicetogetcountriesdata_properties_typeProperties_url": {
+						"value": "[parameters('RestServicetogetcountriesdata_properties_typeProperties_url')]"
 					}
 				}
 			},

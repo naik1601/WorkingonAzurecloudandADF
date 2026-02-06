@@ -23,6 +23,12 @@
 		"AzureSqlDb1_properties_typeProperties_userName": {
 			"value": "azurelib"
 		},
+		"RestService1_properties_typeProperties_url": {
+			"value": "https://restcountries.com/v3.1/name"
+		},
+		"RestServicetogetcountriesdata_properties_typeProperties_url": {
+			"value": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
+		},
 		"containerUri": {
 			"value": ""
 		},
