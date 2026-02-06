@@ -1,0 +1,9 @@
+{
+	"name": "Roadtofang",
+	"location": "eastus",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "755c1d20-b226-4e86-9554-21e14da02de2",
+		"tenantId": "2b95956c-9368-4dac-9685-8e170528f3aa"
+	}
+}

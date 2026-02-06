@@ -1,0 +1,20 @@
+{
+	"name": "Json_Custmer_DATA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeSg1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "JSON",
+				"fileSystem": "landing"
+			}
+		},
+		"schema": {}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}
