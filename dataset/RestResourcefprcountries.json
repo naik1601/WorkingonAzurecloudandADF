@@ -1,0 +1,12 @@
+{
+	"name": "RestResourcefprcountries",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RestServicetogetcountriesdata",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

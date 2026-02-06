@@ -1,0 +1,20 @@
+{
+	"name": "Assgnment8",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeSg1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "productnew",
+				"fileSystem": "landing"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
