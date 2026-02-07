@@ -40,7 +40,7 @@
 						"referenceName": "RestResource1",
 						"type": "DatasetReference",
 						"parameters": {
-							"relativeurl": "india"
+							"relativeurl": "usa"
 						}
 					}
 				],
@@ -50,7 +50,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"dirctory": "india",
-							"filename": "india"
+							"filename": "usa"
 						}
 					}
 				]
