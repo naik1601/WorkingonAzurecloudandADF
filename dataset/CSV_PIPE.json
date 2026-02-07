@@ -1,0 +1,23 @@
+{
+	"name": "CSV_PIPE",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeSg1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "CSV_PIPE",
+				"fileSystem": "landing"
+			},
+			"columnDelimiter": "|",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}
