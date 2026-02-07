@@ -38,12 +38,86 @@
 		"RestServicetogetcountriesdata_properties_typeProperties_url": {
 			"type": "string",
 			"defaultValue": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
+		},
+		"trigger10_6_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec00179d-8966-40de-aedb-8b8ce4f9d4d2/resourceGroups/Azurelib-Academy/providers/Microsoft.Storage/storageAccounts/missiontofangadls"
 		}
 	},
 	"variables": {
 		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
 	},
 	"resources": [
+		{
+			"name": "[concat(parameters('factoryName'), '/Assignment10_6')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResource1",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeurl": "usa"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {
+									"dirctory": "india",
+									"filename": "usa"
+								}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
+		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Assignment10a')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
@@ -167,6 +241,108 @@
 								}
 							}
 						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
+				"[concat(variables('factoryId'), '/datasets/Json1')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/Assignment10c')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "RestSource",
+								"httpRequestTimeout": "00:01:40",
+								"requestInterval": "00.00:00:00.010",
+								"requestMethod": "GET",
+								"paginationRules": {
+									"supportRFC5988": "true"
+								}
+							},
+							"sink": {
+								"type": "JsonSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "JsonWriteSettings"
+								}
+							},
+							"enableStaging": false
+						},
+						"inputs": [
+							{
+								"referenceName": "RestResource1",
+								"type": "DatasetReference",
+								"parameters": {
+									"relativeurl": "india"
+								}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Json1",
+								"type": "DatasetReference",
+								"parameters": {
+									"dirctory": "india",
+									"filename": "india"
+								}
+							}
+						]
+					},
+					{
+						"name": "Web1",
+						"type": "WebActivity",
+						"dependsOn": [
+							{
+								"activity": "Copy data1",
+								"dependencyConditions": [
+									"Failed",
+									"Succeeded"
+								]
+							}
+						],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"method": "POST",
+							"headers": {},
+							"url": "https://prod-06.northcentralus.logic.azure.com:443/workflows/fe7ecf38836e45ef855d7496d3384706/triggers/When_an_HTTP_request_is_received/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2FWhen_an_HTTP_request_is_received%2Frun&sv=1.0&sig=YFPEbk6gr0nHC_NNFwiZ6pu6mF8wWyhnmSdwpYooKjU",
+							"body": {
+								"PiplelineName": "Assignment 10 using logicall app parameter function",
+								"ActivityName": "Assignment10a",
+								"Receiver": "naikshreyesh1601@gmail.com",
+								"status": "Passed"
+							}
+						}
 					}
 				],
 				"policy": {
@@ -1633,6 +1809,78 @@
 			]
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Json2')]",
+			"type": "Microsoft.DataFactory/factories/datasets",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"linkedServiceName": {
+					"referenceName": "AzureDataLakeSg1",
+					"type": "LinkedServiceReference"
+				},
+				"annotations": [],
+				"type": "Json",
+				"typeProperties": {
+					"location": {
+						"type": "AzureBlobFSLocation",
+						"fileSystem": "landing"
+					}
+				},
+				"schema": {
+					"type": "object",
+					"properties": {
+						"CustomerID": {
+							"type": "integer"
+						},
+						"NameStyle": {
+							"type": "boolean"
+						},
+						"Title": {
+							"type": "string"
+						},
+						"FirstName": {
+							"type": "string"
+						},
+						"MiddleName": {
+							"type": "string"
+						},
+						"LastName": {
+							"type": "string"
+						},
+						"Suffix": {
+							"type": "string"
+						},
+						"CompanyName": {
+							"type": "string"
+						},
+						"SalesPerson": {
+							"type": "string"
+						},
+						"EmailAddress": {
+							"type": "string"
+						},
+						"Phone": {
+							"type": "string"
+						},
+						"PasswordHash": {
+							"type": "string"
+						},
+						"PasswordSalt": {
+							"type": "string"
+						},
+						"rowguid": {
+							"type": "string"
+						},
+						"ModifiedDate": {
+							"type": "string"
+						}
+					}
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/linkedServices/AzureDataLakeSg1')]"
+			]
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Json_Custmer_DATA')]",
 			"type": "Microsoft.DataFactory/factories/datasets",
 			"apiVersion": "2018-06-01",
@@ -2013,7 +2261,7 @@
 				"typeProperties": {
 					"recurrence": {
 						"frequency": "Minute",
-						"interval": 15,
+						"interval": 5,
 						"startTime": "2026-02-06T05:45:00",
 						"endTime": "2026-02-07T06:00:00",
 						"timeZone": "Central Standard Time"
@@ -2022,6 +2270,37 @@
 			},
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/pipelines/Assignment10b')]"
+			]
+		},
+		{
+			"name": "[concat(parameters('factoryName'), '/trigger10_6')]",
+			"type": "Microsoft.DataFactory/factories/triggers",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"annotations": [],
+				"runtimeState": "Stopped",
+				"pipelines": [
+					{
+						"pipelineReference": {
+							"referenceName": "Assignment10_6",
+							"type": "PipelineReference"
+						},
+						"parameters": {}
+					}
+				],
+				"type": "BlobEventsTrigger",
+				"typeProperties": {
+					"blobPathBeginsWith": "/landing/blobs/india/",
+					"blobPathEndsWith": ".txt",
+					"ignoreEmptyBlobs": true,
+					"scope": "[parameters('trigger10_6_properties_typeProperties_scope')]",
+					"events": [
+						"Microsoft.Storage.BlobCreated"
+					]
+				}
+			},
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/pipelines/Assignment10_6')]"
 			]
 		},
 		{

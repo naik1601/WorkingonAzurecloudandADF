@@ -29,6 +29,9 @@
 		"RestServicetogetcountriesdata_properties_typeProperties_url": {
 			"value": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
 		},
+		"trigger10_6_properties_typeProperties_scope": {
+			"value": "/subscriptions/ec00179d-8966-40de-aedb-8b8ce4f9d4d2/resourceGroups/Azurelib-Academy/providers/Microsoft.Storage/storageAccounts/missiontofangadls"
+		},
 		"containerUri": {
 			"value": ""
 		},

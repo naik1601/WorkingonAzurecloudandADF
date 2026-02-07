@@ -39,6 +39,10 @@
 			"type": "string",
 			"defaultValue": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
 		},
+		"trigger10_6_properties_typeProperties_scope": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ec00179d-8966-40de-aedb-8b8ce4f9d4d2/resourceGroups/Azurelib-Academy/providers/Microsoft.Storage/storageAccounts/missiontofangadls"
+		},
 		"containerUri": {
 			"type": "string",
 			"metadata": "URI to storage account containing linked ARM templates"
@@ -107,6 +111,9 @@
 				"parameters": {
 					"factoryName": {
 						"value": "[parameters('factoryName')]"
+					},
+					"trigger10_6_properties_typeProperties_scope": {
+						"value": "[parameters('trigger10_6_properties_typeProperties_scope')]"
 					}
 				}
 			},
