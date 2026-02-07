@@ -16,14 +16,12 @@
 				"userProperties": [],
 				"typeProperties": {
 					"source": {
-						"type": "JsonSource",
-						"storeSettings": {
-							"type": "AzureBlobFSReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "JsonReadSettings"
+						"type": "RestSource",
+						"httpRequestTimeout": "00:01:40",
+						"requestInterval": "00.00:00:00.010",
+						"requestMethod": "GET",
+						"paginationRules": {
+							"supportRFC5988": "true"
 						}
 					},
 					"sink": {
@@ -39,11 +37,10 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "Json1",
+						"referenceName": "RestResource1",
 						"type": "DatasetReference",
 						"parameters": {
-							"dirctory": "assignment106",
-							"filename": "assignment106"
+							"relativeurl": "india"
 						}
 					}
 				],
@@ -52,7 +49,7 @@
 						"referenceName": "Json1",
 						"type": "DatasetReference",
 						"parameters": {
-							"dirctory": "Assignmet10",
+							"dirctory": "india",
 							"filename": "india"
 						}
 					}
