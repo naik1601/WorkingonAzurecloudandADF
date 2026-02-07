@@ -816,42 +816,43 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
-								"type": "JsonSink",
+								"type": "DelimitedTextSink",
 								"storeSettings": {
 									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings"
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "RestResource1",
+								"referenceName": "AzureSqlTable1",
 								"type": "DatasetReference",
-								"parameters": {
-									"relativeurl": "india"
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Json1",
+								"referenceName": "changingfolder",
 								"type": "DatasetReference",
-								"parameters": {
-									"dirctory": "india",
-									"filename": "usa"
-								}
+								"parameters": {}
 							}
 						]
 					}
@@ -862,8 +863,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
-				"[concat(variables('factoryId'), '/datasets/Json1')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/datasets/changingfolder')]"
 			]
 		}
 	]

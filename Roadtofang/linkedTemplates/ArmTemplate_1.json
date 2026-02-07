@@ -7,7 +7,7 @@
 			"metadata": "Data Factory name",
 			"defaultValue": "Roadtofang"
 		},
-		"trigger10_6_properties_typeProperties_scope": {
+		"triggerassignment10_6_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec00179d-8966-40de-aedb-8b8ce4f9d4d2/resourceGroups/Azurelib-Academy/providers/Microsoft.Storage/storageAccounts/missiontofangadls"
 		}
@@ -1566,7 +1566,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -1592,12 +1592,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger10_6')]",
+			"name": "[concat(parameters('factoryName'), '/triggerassignment10_6')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -1609,10 +1609,10 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/landing/blobs/india/",
+					"blobPathBeginsWith": "/landing/blobs/india",
 					"blobPathEndsWith": ".txt",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('trigger10_6_properties_typeProperties_scope')]",
+					"scope": "[parameters('triggerassignment10_6_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]

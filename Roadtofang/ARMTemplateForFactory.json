@@ -39,7 +39,7 @@
 			"type": "string",
 			"defaultValue": "https://restcountries.com/v3.1/all?fields=name,cca2,capital,region,subregion,population"
 		},
-		"trigger10_6_properties_typeProperties_scope": {
+		"triggerassignment10_6_properties_typeProperties_scope": {
 			"type": "string",
 			"defaultValue": "/subscriptions/ec00179d-8966-40de-aedb-8b8ce4f9d4d2/resourceGroups/Azurelib-Academy/providers/Microsoft.Storage/storageAccounts/missiontofangadls"
 		}
@@ -68,42 +68,43 @@
 						"userProperties": [],
 						"typeProperties": {
 							"source": {
-								"type": "RestSource",
-								"httpRequestTimeout": "00:01:40",
-								"requestInterval": "00.00:00:00.010",
-								"requestMethod": "GET",
-								"paginationRules": {
-									"supportRFC5988": "true"
-								}
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
 							},
 							"sink": {
-								"type": "JsonSink",
+								"type": "DelimitedTextSink",
 								"storeSettings": {
 									"type": "AzureBlobFSWriteSettings"
 								},
 								"formatSettings": {
-									"type": "JsonWriteSettings"
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
 								}
 							},
-							"enableStaging": false
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
 						},
 						"inputs": [
 							{
-								"referenceName": "RestResource1",
+								"referenceName": "AzureSqlTable1",
 								"type": "DatasetReference",
-								"parameters": {
-									"relativeurl": "india"
-								}
+								"parameters": {}
 							}
 						],
 						"outputs": [
 							{
-								"referenceName": "Json1",
+								"referenceName": "changingfolder",
 								"type": "DatasetReference",
-								"parameters": {
-									"dirctory": "india",
-									"filename": "usa"
-								}
+								"parameters": {}
 							}
 						]
 					}
@@ -114,8 +115,8 @@
 				"annotations": []
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/RestResource1')]",
-				"[concat(variables('factoryId'), '/datasets/Json1')]"
+				"[concat(variables('factoryId'), '/datasets/AzureSqlTable1')]",
+				"[concat(variables('factoryId'), '/datasets/changingfolder')]"
 			]
 		},
 		{
@@ -2472,7 +2473,7 @@
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -2498,12 +2499,12 @@
 			]
 		},
 		{
-			"name": "[concat(parameters('factoryName'), '/trigger10_6')]",
+			"name": "[concat(parameters('factoryName'), '/triggerassignment10_6')]",
 			"type": "Microsoft.DataFactory/factories/triggers",
 			"apiVersion": "2018-06-01",
 			"properties": {
 				"annotations": [],
-				"runtimeState": "Started",
+				"runtimeState": "Stopped",
 				"pipelines": [
 					{
 						"pipelineReference": {
@@ -2515,10 +2516,10 @@
 				],
 				"type": "BlobEventsTrigger",
 				"typeProperties": {
-					"blobPathBeginsWith": "/landing/blobs/india/",
+					"blobPathBeginsWith": "/landing/blobs/india",
 					"blobPathEndsWith": ".txt",
 					"ignoreEmptyBlobs": true,
-					"scope": "[parameters('trigger10_6_properties_typeProperties_scope')]",
+					"scope": "[parameters('triggerassignment10_6_properties_typeProperties_scope')]",
 					"events": [
 						"Microsoft.Storage.BlobCreated"
 					]
