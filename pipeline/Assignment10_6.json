@@ -49,8 +49,7 @@
 						"referenceName": "Json1",
 						"type": "DatasetReference",
 						"parameters": {
-							"dirctory": "india",
-							"filename": "usa"
+							"dirctory": "india"
 						}
 					}
 				]
