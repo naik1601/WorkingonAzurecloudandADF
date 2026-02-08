@@ -48,9 +48,6 @@
 				},
 				{
 					"name": "select3"
-				},
-				{
-					"name": "derivedColumn2"
 				}
 			],
 			"scriptLines": [
@@ -122,12 +119,7 @@
 				"          {dbo.dum_city}",
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> select3",
-				"split1@unMatched derive({dbo.main_id} = id,",
-				"          {dbo.main_name} = name,",
-				"          {dbo.main_city} = city,",
-				"          {dbo.dum_id} = {dbo.main_id},",
-				"          {dbo.dum_name} = {}) ~> derivedColumn2"
+				"     skipDuplicateMapOutputs: true) ~> select3"
 			]
 		}
 	}
