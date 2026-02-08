@@ -1,0 +1,134 @@
+{
+	"name": "Assignment9_4",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "DelimitedText7",
+						"type": "DatasetReference"
+					},
+					"name": "source1"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable5",
+						"type": "DatasetReference"
+					},
+					"name": "source2"
+				},
+				{
+					"dataset": {
+						"referenceName": "AzureSqlTable6",
+						"type": "DatasetReference"
+					},
+					"name": "source3"
+				}
+			],
+			"sinks": [],
+			"transformations": [
+				{
+					"name": "select1"
+				},
+				{
+					"name": "select2"
+				},
+				{
+					"name": "join1"
+				},
+				{
+					"name": "join2"
+				},
+				{
+					"name": "split1"
+				},
+				{
+					"name": "derivedColumn1"
+				},
+				{
+					"name": "select3"
+				},
+				{
+					"name": "derivedColumn2"
+				}
+			],
+			"scriptLines": [
+				"source(output(",
+				"          id as short,",
+				"          name as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source1",
+				"source(output(",
+				"          id as integer,",
+				"          name as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source2",
+				"source(output(",
+				"          id as integer,",
+				"          name as string,",
+				"          city as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> source3",
+				"source2 select(mapColumn(",
+				"          {dbo.main_id} = id,",
+				"          {dbo.main_name} = name,",
+				"          {dbo.main_city} = city",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select1",
+				"source3 select(mapColumn(",
+				"          {dbo.dum_id} = id,",
+				"          {dbo.dum_name} = name,",
+				"          {dbo.dum_city} = city",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select2",
+				"source1, select1 join(id == {dbo.main_id},",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join1",
+				"join1, select2 join(id == {dbo.dum_id},",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> join2",
+				"join2 split(!isNull({dbo.main_id}),",
+				"     isNull({dbo.main_id})&&isNull({dbo.dum_id}),",
+				"     disjoint: false) ~> split1@(Matched, unMatched)",
+				"split1@Matched derive({dbo.dum_id} = {dbo.main_id},",
+				"          {dbo.dum_name} = {dbo.main_name},",
+				"          {dbo.dum_city} = {dbo.main_city},",
+				"          {dbo.main_id} = id,",
+				"          {dbo.main_name} = name,",
+				"          {dbo.main_city} = city) ~> derivedColumn1",
+				"derivedColumn1 select(mapColumn(",
+				"          {dbo.main_id},",
+				"          {dbo.main_name},",
+				"          {dbo.main_city},",
+				"          {dbo.dum_id},",
+				"          {dbo.dum_name},",
+				"          {dbo.dum_city}",
+				"     ),",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> select3",
+				"split1@unMatched derive({dbo.main_id} = id,",
+				"          {dbo.main_name} = name,",
+				"          {dbo.main_city} = city,",
+				"          {dbo.dum_id} = {dbo.main_id},",
+				"          {dbo.dum_name} = {}) ~> derivedColumn2"
+			]
+		}
+	}
+}
