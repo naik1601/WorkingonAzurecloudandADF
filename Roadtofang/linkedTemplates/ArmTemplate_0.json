@@ -502,7 +502,7 @@
 				],
 				"typeProperties": {
 					"schema": "SalesLT",
-					"table": "CustomerAddress"
+					"table": "Customer"
 				}
 			},
 			"dependsOn": [
