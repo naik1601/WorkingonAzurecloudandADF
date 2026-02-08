@@ -1,0 +1,29 @@
+{
+	"name": "Addressfolderaccess",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AzureDataLakeSg1",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "Threshold.txt",
+				"folderPath": "Address",
+				"fileSystem": "landing"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": false,
+			"quoteChar": "\""
+		},
+		"schema": [
+			{
+				"name": "250",
+				"type": "String"
+			}
+		]
+	}
+}
