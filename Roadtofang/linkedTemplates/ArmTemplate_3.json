@@ -1267,6 +1267,74 @@
 			"dependsOn": []
 		},
 		{
+			"name": "[concat(parameters('factoryName'), '/Testinggitactionsforcicdpipeline')]",
+			"type": "Microsoft.DataFactory/factories/pipelines",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"activities": [
+					{
+						"name": "Copy data1",
+						"type": "Copy",
+						"dependsOn": [],
+						"policy": {
+							"timeout": "0.12:00:00",
+							"retry": 0,
+							"retryIntervalInSeconds": 30,
+							"secureOutput": false,
+							"secureInput": false
+						},
+						"userProperties": [],
+						"typeProperties": {
+							"source": {
+								"type": "AzureSqlSource",
+								"queryTimeout": "02:00:00",
+								"partitionOption": "None"
+							},
+							"sink": {
+								"type": "DelimitedTextSink",
+								"storeSettings": {
+									"type": "AzureBlobFSWriteSettings"
+								},
+								"formatSettings": {
+									"type": "DelimitedTextWriteSettings",
+									"quoteAllText": true,
+									"fileExtension": ".txt"
+								}
+							},
+							"enableStaging": false,
+							"translator": {
+								"type": "TabularTranslator",
+								"typeConversion": true,
+								"typeConversionSettings": {
+									"allowDataTruncation": true,
+									"treatBooleanAsNumber": false
+								}
+							}
+						},
+						"inputs": [
+							{
+								"referenceName": "AzureSqlTable3",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						],
+						"outputs": [
+							{
+								"referenceName": "Addressfolderaccess",
+								"type": "DatasetReference",
+								"parameters": {}
+							}
+						]
+					}
+				],
+				"policy": {
+					"elapsedTimeMetric": {}
+				},
+				"annotations": []
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/foreach demonsration')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
@@ -1679,73 +1747,6 @@
 						"     skipDuplicateMapInputs: true,",
 						"     skipDuplicateMapOutputs: true,",
 						"     errorHandlingOption: 'stopOnFirstError') ~> sink2"
-					]
-				}
-			},
-			"dependsOn": []
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Assignment8_1')]",
-			"type": "Microsoft.DataFactory/factories/dataflows",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"type": "MappingDataFlow",
-				"typeProperties": {
-					"sources": [
-						{
-							"dataset": {
-								"referenceName": "DelimitedText4",
-								"type": "DatasetReference"
-							},
-							"name": "source1"
-						}
-					],
-					"sinks": [
-						{
-							"dataset": {
-								"referenceName": "AzureSqlTable2",
-								"type": "DatasetReference"
-							},
-							"name": "sink1"
-						}
-					],
-					"transformations": [
-						{
-							"name": "filter1"
-						}
-					],
-					"scriptLines": [
-						"source(output(",
-						"          CustomerID as short,",
-						"          NameStyle as boolean,",
-						"          Title as string,",
-						"          FirstName as string,",
-						"          MiddleName as string,",
-						"          LastName as string,",
-						"          Suffix as string,",
-						"          CompanyName as string,",
-						"          SalesPerson as string,",
-						"          EmailAddress as string,",
-						"          Phone as string,",
-						"          PasswordHash as string,",
-						"          PasswordSalt as string,",
-						"          rowguid as string,",
-						"          ModifiedDate as string",
-						"     ),",
-						"     allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 filter(CustomerID%2==0) ~> filter1",
-						"filter1 sink(allowSchemaDrift: true,",
-						"     validateSchema: false,",
-						"     deletable:false,",
-						"     insertable:true,",
-						"     updateable:false,",
-						"     upsertable:false,",
-						"     format: 'table',",
-						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true,",
-						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
 					]
 				}
 			},

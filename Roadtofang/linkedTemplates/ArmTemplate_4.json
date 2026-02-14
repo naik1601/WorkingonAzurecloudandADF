@@ -13,6 +13,73 @@
 	},
 	"resources": [
 		{
+			"name": "[concat(parameters('factoryName'), '/Assignment8_1')]",
+			"type": "Microsoft.DataFactory/factories/dataflows",
+			"apiVersion": "2018-06-01",
+			"properties": {
+				"type": "MappingDataFlow",
+				"typeProperties": {
+					"sources": [
+						{
+							"dataset": {
+								"referenceName": "DelimitedText4",
+								"type": "DatasetReference"
+							},
+							"name": "source1"
+						}
+					],
+					"sinks": [
+						{
+							"dataset": {
+								"referenceName": "AzureSqlTable2",
+								"type": "DatasetReference"
+							},
+							"name": "sink1"
+						}
+					],
+					"transformations": [
+						{
+							"name": "filter1"
+						}
+					],
+					"scriptLines": [
+						"source(output(",
+						"          CustomerID as short,",
+						"          NameStyle as boolean,",
+						"          Title as string,",
+						"          FirstName as string,",
+						"          MiddleName as string,",
+						"          LastName as string,",
+						"          Suffix as string,",
+						"          CompanyName as string,",
+						"          SalesPerson as string,",
+						"          EmailAddress as string,",
+						"          Phone as string,",
+						"          PasswordHash as string,",
+						"          PasswordSalt as string,",
+						"          rowguid as string,",
+						"          ModifiedDate as string",
+						"     ),",
+						"     allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     ignoreNoFilesFound: false) ~> source1",
+						"source1 filter(CustomerID%2==0) ~> filter1",
+						"filter1 sink(allowSchemaDrift: true,",
+						"     validateSchema: false,",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
+						"     skipDuplicateMapInputs: true,",
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError') ~> sink1"
+					]
+				}
+			},
+			"dependsOn": []
+		},
+		{
 			"name": "[concat(parameters('factoryName'), '/Assignment8_2')]",
 			"type": "Microsoft.DataFactory/factories/dataflows",
 			"apiVersion": "2018-06-01",
@@ -1099,7 +1166,9 @@
 				},
 				"annotations": []
 			},
-			"dependsOn": []
+			"dependsOn": [
+				"[concat(variables('factoryId'), '/dataflows/Assignment8_1')]"
+			]
 		},
 		{
 			"name": "[concat(parameters('factoryName'), '/Assignment8_2_Execution')]",
@@ -1431,165 +1500,6 @@
 			"dependsOn": [
 				"[concat(variables('factoryId'), '/dataflows/Assignment9_3')]"
 			]
-		},
-		{
-			"name": "[concat(parameters('factoryName'), '/Ingestion_Product_Adress_to_json')]",
-			"type": "Microsoft.DataFactory/factories/pipelines",
-			"apiVersion": "2018-06-01",
-			"properties": {
-				"activities": [
-					{
-						"name": "Getproduct count",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select count(*) as totalcount from saleslt.product",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "Totalrecords",
-						"type": "Lookup",
-						"dependsOn": [],
-						"policy": {
-							"timeout": "0.12:00:00",
-							"retry": 0,
-							"retryIntervalInSeconds": 30,
-							"secureOutput": false,
-							"secureInput": false
-						},
-						"userProperties": [],
-						"typeProperties": {
-							"source": {
-								"type": "AzureSqlSource",
-								"sqlReaderQuery": "select count(*) as Totalrecords from saleslt.product",
-								"queryTimeout": "02:00:00",
-								"partitionOption": "None"
-							},
-							"dataset": {
-								"referenceName": "AzureSqlTable1",
-								"type": "DatasetReference",
-								"parameters": {}
-							}
-						}
-					},
-					{
-						"name": "If Condition1",
-						"type": "IfCondition",
-						"dependsOn": [
-							{
-								"activity": "Totalrecords",
-								"dependencyConditions": [
-									"Succeeded"
-								]
-							}
-						],
-						"userProperties": [],
-						"typeProperties": {
-							"expression": {
-								"value": "@greater(activity('Totalrecords').output.firstRow.totalcount,200)",
-								"type": "Expression"
-							},
-							"ifTrueActivities": [
-								{
-									"name": "Copy data1",
-									"type": "Copy",
-									"dependsOn": [],
-									"policy": {
-										"timeout": "0.12:00:00",
-										"retry": 0,
-										"retryIntervalInSeconds": 30,
-										"secureOutput": false,
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"source": {
-											"type": "AzureSqlSource",
-											"queryTimeout": "02:00:00",
-											"partitionOption": "None"
-										},
-										"sink": {
-											"type": "JsonSink",
-											"storeSettings": {
-												"type": "AzureBlobFSWriteSettings"
-											},
-											"formatSettings": {
-												"type": "JsonWriteSettings"
-											}
-										},
-										"enableStaging": false
-									},
-									"inputs": [
-										{
-											"referenceName": "Generic_sql",
-											"type": "DatasetReference",
-											"parameters": {
-												"schemaname": "saleslt",
-												"tablename": "product"
-											}
-										}
-									],
-									"outputs": [
-										{
-											"referenceName": "Json_Custmer_DATA",
-											"type": "DatasetReference",
-											"parameters": {}
-										}
-									]
-								},
-								{
-									"name": "running nesting",
-									"type": "ExecutePipeline",
-									"dependsOn": [
-										{
-											"activity": "Copy data1",
-											"dependencyConditions": [
-												"Succeeded"
-											]
-										}
-									],
-									"policy": {
-										"secureInput": false
-									},
-									"userProperties": [],
-									"typeProperties": {
-										"pipeline": {
-											"referenceName": "Ingestion_Product_Adress_to_json_copy1",
-											"type": "PipelineReference"
-										},
-										"waitOnCompletion": true,
-										"parameters": {}
-									}
-								}
-							]
-						}
-					}
-				],
-				"policy": {
-					"elapsedTimeMetric": {}
-				},
-				"annotations": [],
-				"lastPublishTime": "2026-01-28T23:33:57Z"
-			},
-			"dependsOn": []
 		}
 	]
 }
