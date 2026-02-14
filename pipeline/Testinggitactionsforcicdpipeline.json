@@ -49,7 +49,7 @@
 				],
 				"outputs": [
 					{
-						"referenceName": "Addressfolderaccess",
+						"referenceName": "DelimitedText5",
 						"type": "DatasetReference"
 					}
 				]
